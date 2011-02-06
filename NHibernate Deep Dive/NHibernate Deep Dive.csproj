@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Basic\BasicOperationsSpecification.cs" />
     <Compile Include="Concurrency\ConcurrencySpecification.cs" />
     <Compile Include="Concurrency\DbVersion\DbVersionedConcurrencySpecification.cs" />
     <Compile Include="Concurrency\Optimistic\OptimisticConcurrencySpecification.cs" />
@@ -111,6 +112,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Basic\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ClearDatabaseScript.hbm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
