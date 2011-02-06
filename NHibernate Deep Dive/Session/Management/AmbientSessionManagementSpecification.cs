@@ -12,7 +12,7 @@ namespace NHibernate_Deep_Dive.Session.Management
         public void Ambient_session_can_be_accessed_from_anywhere_in_the_code()
         {
             using (var session = SessionFactory.OpenSession())
-            {
+            {                
                 //This goes to the infrastructure (WCF Message Inspector, ASP.NET Http Module)
                 CurrentSessionContext.Bind(session);
 
@@ -53,6 +53,16 @@ namespace NHibernate_Deep_Dive.Session.Management
 
         protected override void AdjustConfiguration(NHibernate.Cfg.Configuration cfg)
         {
+            /*
+             * NHibernate.Context.CallSessionContext
+             * NHibernate.Context.ManagedWebSessionContext
+             * NHibernate.Context.MapBasedSessionContext
+             * NHibernate.Context.ReflectiveHttpContext
+             * NHibernate.Context.ThreadLocalSessionContext
+             * NHibernate.Context.ThreadStaticSessionContext
+             * NHibernate.Context.WcfOperationSessionContext
+             * NHibernate.Context.WebSessionContext
+             */
             cfg.CurrentSessionContext<ThreadStaticSessionContext>();
         }
     }
