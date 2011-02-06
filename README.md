@@ -55,3 +55,29 @@ What you want to do is probably enable also entity caching for objects contained
 The query cache works similar to the collection cache -- it also stores only identifiers of objects returned by a query. For query cache to work, it must be enabled globally (on `Configuration` object) and then locally for each query that is to be cached.
 
 The same performance problem applies to query cache also. If used without caching actual entities, it can degrade performance significantly.
+
+## Concurrency
+
+NHibernate offers several concurrency handling strategies.They can be broken down into two well-known categories: optimistic and pessimistic concurrency.
+
+### Optimistic concurrency (simple)
+
+This strategy uses all known (after loading an entity into memory) field values as version information. When issuing an update, all the original field values are appended to the where clause of update statement. This results in performing actual update only if no single field in the database has changed its value since the object has been loaded. NHibernate checks the number of affected rows and if it is zero (meaning where clause returned no results -- the data has changed) it throws a `StaleObjectStateException`.
+
+Notice that (like in case of any other exception thrown by session object) a session that has encountered a version conflict becomes unusable and needs to be disposed immediately (and possibly replaced by a new one).
+
+### Versioned optimistic concurrency
+
+This strategy uses an integral version number which is incremented on each modification to the object. Version number is stored in a special column. When updating an object, NHibernate appends additional set clause to increment the version number field and an additional where clause with version number as it was at the time when object was retrieved from the database. The interpretation of the results of an update is similar to simple optimistic concurrency strategy
+
+### Timestamped optimistic concurrency
+
+This strategy is very similar to the former one, but uses a `DATETIME` value instead of an integral number. Due to the limited precision of date values there is a small probability that the new modification timestamp would be equal to the previous one resulting in an undetected version conflict. Because of this flaw this strategy is generally discouraged.
+
+### Natively timestamped optimistic concurrency
+
+Some databases, like Microsoft SQL Server support natively timestamp values which uniqueness is guaranteed by the database transactional engine.NHibernate can take advantage of this capabilities. The drawback of this strategy is that the native timestamp value is not human-readable and does not have any well-defined meaning to the problem domain.
+
+### Pessimistic concurrency
+
+## Session management
