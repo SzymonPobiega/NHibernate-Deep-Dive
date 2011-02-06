@@ -25,7 +25,7 @@ namespace NHibernate_Deep_Dive.Session
             using (var session = SessionFactory.OpenSession())
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
-                customer.FirstName = "Michał";
+                customer.FirstName = "Graham";
 
                 session.Flush(); //Forces synchronizing changes to DB
             }
@@ -33,7 +33,7 @@ namespace NHibernate_Deep_Dive.Session
             using (var session = SessionFactory.OpenSession())
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
-                customer.FirstName.Should().Be("Michał");
+                customer.FirstName.Should().Be("Graham");
             }
         }
 
@@ -44,7 +44,7 @@ namespace NHibernate_Deep_Dive.Session
             using (var transaction = session.BeginTransaction())
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
-                customer.FirstName = "Michał";
+                customer.FirstName = "Graham";
 
                 transaction.Commit(); //Forces synchronizing changes to DB
             }
@@ -52,7 +52,7 @@ namespace NHibernate_Deep_Dive.Session
             using (var session = SessionFactory.OpenSession())
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
-                customer.FirstName.Should().Be("Michał");
+                customer.FirstName.Should().Be("Graham");
             }
         }
     }

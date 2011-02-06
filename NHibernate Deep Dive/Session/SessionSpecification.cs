@@ -16,13 +16,13 @@ namespace NHibernate_Deep_Dive.Session
             {
                 FirstCustomerId = session.Save(new Customer
                                                        {
-                                                           FirstName = "Szymon",
-                                                           LastName = "Pobiega"
+                                                           FirstName = "Terry",
+                                                           LastName = "Gilliam"
                                                        });
                 SecondCustomerId = session.Save(new Customer
                                                     {
-                                                        FirstName = "Michał",
-                                                        LastName = "Wójcik"
+                                                        FirstName = "Graham",
+                                                        LastName = "Chapman"
                                                     });
                 transaction.Commit();
             }

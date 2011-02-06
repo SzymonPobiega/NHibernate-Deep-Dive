@@ -43,8 +43,8 @@ namespace NHibernate_Deep_Dive.Concurrency
             {
                 CustomerId = session.Save(new Customer
                 {
-                    FirstName = "Szymon",
-                    LastName = "Pobiega"
+                    FirstName = "Terry",
+                    LastName = "Gilliam"
                 });
                 transaction.Commit();
             }

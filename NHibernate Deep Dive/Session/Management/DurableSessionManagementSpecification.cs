@@ -25,7 +25,7 @@ namespace NHibernate_Deep_Dive.Session.Management
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
                 customer.FirstName.Should().Be("John");
-                customer.LastName.Should().Be("Doe");
+                customer.LastName.Should().Be("Cleese");
             }
         }
 
@@ -35,7 +35,7 @@ namespace NHibernate_Deep_Dive.Session.Management
             using (var transaction = session.BeginTransaction())
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
-                customer.LastName = "Doe";
+                customer.LastName = "Cleese";
                 transaction.Commit();
             }
         }

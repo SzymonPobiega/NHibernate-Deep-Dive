@@ -54,14 +54,14 @@ namespace NHibernate_Deep_Dive.Inheritance
                 _preferredCustomerId = session.Save(new PreferredCustomer
                                                        {
                                                            DiscountPercent = 10,
-                                                           FirstName = "Szymon",
-                                                           LastName = "Pobiega"
+                                                           FirstName = "Terry",
+                                                           LastName = "Gilliam"
                                                        });
                 _bulkCustomerId = session.Save(new BulkCustomer
                                                   {
                                                       MinimumOrderValue = 1000,
-                                                      FirstName = "Michał",
-                                                      LastName = "Wójcik"
+                                                      FirstName = "Graham",
+                                                      LastName = "Chapman"
                                                   });
                 transaction.Commit();
             }
