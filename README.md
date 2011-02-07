@@ -80,4 +80,46 @@ Some databases, like Microsoft SQL Server support natively timestamp values whic
 
 ### Pessimistic concurrency
 
+While optimistic concurrency is about detecting version conflicts, pessimistic concurrency is about preventing them altogether. It does so by locking database rows when retrieving entities from the database. No other session can access the same object until the lock is released.
+
+While whole books can be written on pros and cons of both optimistic and pessimistic concurrency, the rule of thumb is, use optimistic by default and pessimistic only if version conflicts cause major problems (in terms of amount of work that need to be redone).
+
 ## Session management
+
+Session is one of the fundamental concepts of NHibernate. What is it? Some think of it as an object-oriented wrapper around a database connection, but it is only half of the truth. NHibernate session has numerous responsibilities and connection management is only one of them. The other are implementation of Unit of Work and Identity Map patterns.
+
+### Unit of Work
+
+[Unit of Work](http://martinfowler.com/eaaCatalog/unitOfWork.html) is one of Fowler's Enterprise Patterns. It keeps track of what data was changed since objects has been retrieved from database. Upon completion, Unit of Work flushes all the changes to the database in one batch. Session automatically track all the objects that were retrieved by it. That is why you don't have to call `ISession.Update()` explicitly on all modified objects. When calling `ISession.Flush()` or committing the session's transaction, NHibernate picks up all the modifications you made and sends them to the database.
+
+### Identity Map
+
+[Identity Map](http://martinfowler.com/eaaCatalog/identityMap.html) is another pattern described by Fowler implemented by NHibernate's session. Identity Map ensures that, in scope of one particular session, each row in the database corresponds to at most one object instance returned by the session. It means that is you get object with particular id twice, you will get the exact same instance both times. This guarantee is vital to avoid conflicting changes, where two objects representing the same row would be modified independently and send to the database as part of the same commit.
+
+It is also worth notice that session is serializable. It is another argument that it is not a stupid wrapper around a database connection. Sessions can be temporarily disconnected from database and serialized to a byte array. Later, they can be deserialized, reconnected and function correctly.
+
+### Session per call
+
+This is the simplest session management strategy. For each call to the database layer, a new session is created. The corollary of this is you must provide a mechanism to communicate changes between these sessions.
+
+One possibility is to use DTOs (Data Transfer Objects) in the upper layers. After obtaining an entity from the first session, it is mapped to a DTO. The DTO is modified (possibly by the user via user interface) and send back to the data layer. The second session retrieves the same entity, modifies its fields with values from provided DTO and persists the changes.
+
+The second option is to use the same entity instance in all layers. In this case an entity needs to be detached (`ISession.Evict()`) from the first session and then, after performing modifications, reattached (`ISession.Update()`) to the second session.
+
+### Session per request (ambient)
+
+The more complex strategy is having exactly one session per each requests. Requests can be of various types: HTTP requests in a web application, WCF service calls and processing queued messages. The principle is always the same: session is created at the beginning of the request and disposed at the end. In the meantime, it is bound to some ambient context which allows it to be reachable from anywhere in the codebase.
+
+The ambient context implementation is specific to the actual request type that is used. NHibernates supports out-of-the-box all the common scenarios providing ASP.NET, WCF and plain `ThreadStatic` ambient contexts.
+
+### Session per... session (durable)
+
+This strategy uses session serializability capabilities to provide a single Identity Map and Unit of Work scope throughout multiple requests. Between requests the session is stored in some persistent store, like ASP.NET session.
+
+While this approach may seem to be more comfortable from the developer perspective, is has some major drawbacks, two of which are:
+* it requires maintaining state on server side which always degrades scalability potential of the solution
+* entities retrieved by the session are serialized along with the session. When large object graphs are retrieved, the serialized session size can be *huge*.
+
+### Session per form
+
+This approach is used commonly in smart client applications and is *the preferred approach*. The session is open for each form (or presenter or view model, depends on which variation of MVC pattern you are using). Because the form can be displayed for some time and user interaction can result in multiple transactions, there is a need for replacing the session after an exception was thrown (like `StateObjectStateException`).
