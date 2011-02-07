@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate Customer Mapping", "NHibernate Customer Mapping\NHibernate Customer Mapping.csproj", "{2DFFD235-CDE4-4CBE-9327-912317674F1E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernateDataService", "NHibernateDataService\NHibernateDataService.csproj", "{FD0EAFA5-D315-4DD4-9ACC-1A229F1C2E58}"
 EndProject
 Global
@@ -22,10 +20,6 @@ Global
 		{99570809-7057-4A96-80B3-5647F79DDF83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99570809-7057-4A96-80B3-5647F79DDF83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99570809-7057-4A96-80B3-5647F79DDF83}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DFFD235-CDE4-4CBE-9327-912317674F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DFFD235-CDE4-4CBE-9327-912317674F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DFFD235-CDE4-4CBE-9327-912317674F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DFFD235-CDE4-4CBE-9327-912317674F1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FD0EAFA5-D315-4DD4-9ACC-1A229F1C2E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD0EAFA5-D315-4DD4-9ACC-1A229F1C2E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD0EAFA5-D315-4DD4-9ACC-1A229F1C2E58}.Release|Any CPU.ActiveCfg = Release|Any CPU

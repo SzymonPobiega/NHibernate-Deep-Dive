@@ -41,7 +41,6 @@ namespace NHibernate_Deep_Dive.Session
 
             var firstInstance = session.Get<Customer>(FirstCustomerId);
             firstInstance.FirstName = "John";
-            firstInstance.Should().NotBeNull();
 
             session = SerializeAndDeserializeSession(session);
 
@@ -54,6 +53,7 @@ namespace NHibernate_Deep_Dive.Session
         [Test]
         public void Session_creation_is_VERY_CHEAP()
         {
+            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Stop();
             Stopwatch sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < 1000; i++)
