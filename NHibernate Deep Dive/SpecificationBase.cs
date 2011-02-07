@@ -25,6 +25,10 @@ namespace NHibernate_Deep_Dive
         protected Configuration Configuration { get; private set; }
         protected ISessionFactory SessionFactory { get; private set; }
 
+        protected virtual void PopulateDatabase()
+        {            
+        }
+
         protected virtual void BeforeTestRun()
         {
         }
@@ -74,6 +78,7 @@ namespace NHibernate_Deep_Dive
             new SchemaExport(Configuration).Execute(false, true, false);
 
             BeforeTestRun();
+            PopulateDatabase();
 
             HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
         }

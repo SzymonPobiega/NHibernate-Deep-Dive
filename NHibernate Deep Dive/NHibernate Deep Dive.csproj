@@ -84,13 +84,26 @@
     <Compile Include="Concurrency\Pessimistic\PessimisticConcurrencySpecification.cs" />
     <Compile Include="Concurrency\Timestamp\TimestampedConcurrencySpecification.cs" />
     <Compile Include="Concurrency\Version\VersionedConcurrencySpecification.cs" />
+    <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\BulkCustomer.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Order.cs" />
+    <Compile Include="FetchingData\Criteria\CriteriaQuery.cs" />
+    <Compile Include="FetchingData\HQL\HQLQuery.cs" />
     <Compile Include="Inheritance\InheritanceSpecification.cs" />
     <Compile Include="Inheritance\TablePerClass\TablePerClassInheritanceSpecification.cs" />
     <Compile Include="Inheritance\TablePerConcreteClass\TablePerConcreteClassInheritanceSpecification.cs" />
+    <Compile Include="Relations\EagerLoading\EagerLoading.cs" />
+    <Compile Include="Relations\LazyLoading\LazyLoading.cs" />
+    <Compile Include="Relations\ManyToManyBidirectional\ManyToManyRelationBidirectional.cs" />
+    <Compile Include="Relations\ManyToMany\ManyToManyRelation.cs" />
+    <Compile Include="Relations\ManyToOneBidirectional\ManyToOneRelationBidirectional.cs" />
+    <Compile Include="Relations\ManyToOne\ManyToOneRelation.cs" />
+    <Compile Include="Relations\OneToManyBidirectional\OneToManyRelationBidirectional.cs" />
+    <Compile Include="Relations\OneToMany\OneToManyRelation.cs" />
+    <Compile Include="Relations\OneToOneBidirectional\OneToOneRelationBidirectional.cs" />
+    <Compile Include="Relations\OneToOne\OneToOneRelation.cs" />
     <Compile Include="SecondLevelCache\CacheSpecification.cs" />
     <Compile Include="SecondLevelCache\Collection\CollectionCacheSpecification.cs" />
     <Compile Include="SecondLevelCache\EntityAndCollection\EntityAndCollectionCacheSpecification.cs" />
@@ -113,7 +126,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CollectionTypes\Array\" />
+    <Folder Include="CollectionTypes\Bag\" />
+    <Folder Include="CollectionTypes\Map\" />
+    <Folder Include="CollectionTypes\Set\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Basic\Customer.hbm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -136,6 +154,18 @@
     <Content Include="Concurrency\Version\Customer.hbm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="FetchingData\Criteria\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FetchingData\Criteria\Order.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FetchingData\HQL\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FetchingData\HQL\Order.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Inheritance\TablePerClass\Customer.hbm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -143,6 +173,67 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Inheritance\TablePerHierarchy\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\EagerLoading\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\EagerLoading\Order.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\LazyLoading\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\LazyLoading\Order.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\ManyToManyBidirectional\Category.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\ManyToManyBidirectional\Order.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\ManyToMany\Category.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\ManyToMany\Order.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\ManyToOneBidirectional\Address.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\ManyToOneBidirectional\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\ManyToOne\Address.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\ManyToOne\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\OneToManyBidirectional\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\OneToManyBidirectional\Order.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\OneToMany\Customer.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\OneToMany\Order.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\OneToOneBidirectional\Address.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\OneToOneBidirectional\Customer.hbm.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\OneToOne\Address.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Relations\OneToOne\Customer.hbm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SecondLevelCache\Collection\Category.hbm.xml">
