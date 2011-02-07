@@ -34,7 +34,7 @@ namespace NHibernate_Deep_Dive.FetchingData.HQL
         }
 
         [SetUp]
-        public void PrepairDB()
+        public void PrepareDatabase()
         {
             using(ISession session = SessionFactory.OpenSession())
             using(ITransaction transaction = session.BeginTransaction())

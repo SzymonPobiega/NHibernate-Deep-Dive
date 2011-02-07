@@ -15,7 +15,8 @@ using NHibernate.Cfg.Loquacious;
 using NHibernate.Dialect;
 using NHibernate.Linq;
 using NHibernate.Tool.hbm2ddl;
-using NHibernate_Customer_Mapping.Entities;
+using Customer = NHibernateDataService.Entities.Customer;
+using Order = NHibernateDataService.Entities.Order;
 
 namespace NHibernateDataService
 {
@@ -38,7 +39,7 @@ namespace NHibernateDataService
             var factory = CreateSessionFactory();
             this.session = factory.OpenSession();
             this.session.FlushMode = FlushMode.Auto;
-            PrepairDB(factory);
+            PrepareDatabase(factory);
             return new MyNHibernateDataContext(this.session);
         }
 
@@ -52,8 +53,8 @@ namespace NHibernateDataService
                     db.Dialect<MsSql2008Dialect>();
                 });
             Configuration.SetProperty("show_sql", "true");
-            Configuration.SetDefaultAssembly("NHibernate Customer Mapping");
-            Configuration.SetDefaultNamespace("NHibernate_Customer_Mapping.Entities");
+            Configuration.SetDefaultAssembly("NHibernateDataService");
+            Configuration.SetDefaultNamespace("NHibernateDataService.Entities");
             
             Configuration.AddAssembly("NHibernateDataService");
 
@@ -68,7 +69,7 @@ namespace NHibernateDataService
             return SessionFactory;
         }
 
-        private void PrepairDB(ISessionFactory SessionFactory)
+        private void PrepareDatabase(ISessionFactory SessionFactory)
         {
             using (ISession session = SessionFactory.OpenSession())
             using (ITransaction transaction = session.BeginTransaction())
