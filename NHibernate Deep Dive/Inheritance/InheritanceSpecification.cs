@@ -14,7 +14,6 @@ namespace NHibernate_Deep_Dive.Inheritance
         [Test]
         public void Polymorphic_Get()
         {
-            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
             using (var session = OpenNamedSession(GetType().Name.Replace("Specification","") + "_Polymorphic_Get"))
             {
                 Customer anyCustomer;
@@ -29,13 +28,11 @@ namespace NHibernate_Deep_Dive.Inheritance
                 anyCustomer.Should().NotBeNull();
                 anyCustomer.Should().BeOfType<BulkCustomer>();
             }
-            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Stop();
         }
 
         [Test]
         public void Polymorphic_Criteria_Query()
         {
-            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
             using (var session = OpenNamedSession(GetType().Name.Replace("Specification","") + "_Polymorphic_Criteria_Query"))
             {
                 IEnumerable<Customer> customers = session.CreateCriteria<Customer>().List<Customer>();
@@ -46,7 +43,6 @@ namespace NHibernate_Deep_Dive.Inheritance
                 Customer bulkCustomer = customers.Single(x => x.Id.Equals(_bulkCustomerId));
                 bulkCustomer.Should().BeOfType<BulkCustomer>();
             }
-            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Stop();
         }
 
         protected override void BeforeTestRun()
