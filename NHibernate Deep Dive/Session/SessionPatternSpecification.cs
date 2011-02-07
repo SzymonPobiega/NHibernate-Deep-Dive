@@ -9,7 +9,7 @@ namespace NHibernate_Deep_Dive.Session
         [Test]
         public void Session_implements_Identity_Map()
         {
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Session_implements_Identity_Map"))
             {
                 var firstInstance = session.Get<Customer>(FirstCustomerId);
 
@@ -22,7 +22,7 @@ namespace NHibernate_Deep_Dive.Session
         [Test]
         public void Session_can_be_used_as_Unit_of_Work()
         {
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Session_can_be_used_as_Unit_of_Work"))
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
                 customer.FirstName = "Graham";
@@ -30,7 +30,7 @@ namespace NHibernate_Deep_Dive.Session
                 session.Flush(); //Forces synchronizing changes to DB
             }
 
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Check results"))
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
                 customer.FirstName.Should().Be("Graham");
@@ -40,7 +40,7 @@ namespace NHibernate_Deep_Dive.Session
         [Test]
         public void Session_and_Transactions_form_better_Unit_of_Work()
         {
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Session_and_Transactions_form_better_Unit_of_Work"))
             using (var transaction = session.BeginTransaction())
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
@@ -49,7 +49,7 @@ namespace NHibernate_Deep_Dive.Session
                 transaction.Commit(); //Forces synchronizing changes to DB
             }
 
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Check results"))
             {
                 var customer = session.Get<Customer>(FirstCustomerId);
                 customer.FirstName.Should().Be("Graham");

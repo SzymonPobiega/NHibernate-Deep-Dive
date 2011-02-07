@@ -16,7 +16,7 @@ namespace NHibernate_Deep_Dive.Session
         {
             var bf = new BinaryFormatter();
 
-            var session = SessionFactory.OpenSession();
+            var session = OpenNamedSession("Serializable session");
 
             var firstInstance = session.Get<Customer>(FirstCustomerId);
             firstInstance.Should().NotBeNull();
@@ -37,7 +37,7 @@ namespace NHibernate_Deep_Dive.Session
         [Test]
         public void Changes_to_objects_are_preserved_when_serializng_session()
         {
-            var session = SessionFactory.OpenSession();
+            var session = OpenNamedSession("Serializable session");
 
             var firstInstance = session.Get<Customer>(FirstCustomerId);
             firstInstance.FirstName = "John";
@@ -71,14 +71,14 @@ namespace NHibernate_Deep_Dive.Session
         public void Object_can_be_moved_from_one_session_to_another()
         {
             Customer customer;
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Retrieve entity"))
             {
                 customer = session.Get<Customer>(FirstCustomerId);
                 customer.FirstName = "John";
                 session.Evict(customer);
             }
 
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Update entity"))
             {
                 session.IsDirty().Should().BeFalse();
 
@@ -87,7 +87,7 @@ namespace NHibernate_Deep_Dive.Session
                 session.IsDirty().Should().BeTrue();
                 session.Flush();
             }
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Check results"))
             {
                 customer = session.Get<Customer>(FirstCustomerId);
                 customer.FirstName.Should().Be("John");
