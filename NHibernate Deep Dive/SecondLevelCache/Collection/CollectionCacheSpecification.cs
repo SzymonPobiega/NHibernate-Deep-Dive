@@ -16,13 +16,13 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Collection
         public void Only_child_collection_ids_are_stored_in_the_cache()
         {
             //Load from DB
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Collection cache load"))
             {
                 session.Get<Order>(OrderId);
             }
 
             //Then, load from cache
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Collection cache hit"))
             {
                 session.Get<Order>(OrderId);
             }

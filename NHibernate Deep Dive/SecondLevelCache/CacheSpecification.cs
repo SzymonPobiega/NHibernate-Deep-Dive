@@ -13,8 +13,8 @@ namespace NHibernate_Deep_Dive.SecondLevelCache
         protected object FirstCategoryId;
         protected object SecondCategoryId;
 
-        [SetUp]
-        public void PopulateDatabase()
+
+        protected override void BeforeTestRun()
         {
 
             using (var session = SessionFactory.OpenSession())

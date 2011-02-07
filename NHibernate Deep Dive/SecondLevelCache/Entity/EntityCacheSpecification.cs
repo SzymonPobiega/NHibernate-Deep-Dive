@@ -17,7 +17,7 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Entity
         public void Cached_entity_will_be_returned_from_cache_when_searched_by_id()
         {
             //First, load from DB
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Entity cache load"))
             using (var transaction = session.BeginTransaction())
             {
                 var category = session.Get<Category>(FirstCategoryId);
@@ -27,7 +27,7 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Entity
             SessionFactory.Statistics.SecondLevelCacheHitCount.Should().Be(0);
 
             //Then, load from cache
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Entity cache hit"))
             {
                 var category = session.Get<Category>(FirstCategoryId);
                 category.Name.Should().Be("Some other name");
@@ -39,7 +39,7 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Entity
         public void Second_level_cache_does_not_work_without_explicit_transactions()
         {
             //First, load from DB
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Entity cache load and object modification"))
             {
                 var category = session.Get<Category>(FirstCategoryId);
                 category.Name = "Some other name";
@@ -48,7 +48,7 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Entity
             SessionFactory.Statistics.SecondLevelCacheHitCount.Should().Be(0);
 
             //Load from DB again. Cache doesn't work!
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Entity cache miss"))
             {
                 session.Get<Category>(FirstCategoryId);
             }
@@ -63,7 +63,7 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Entity
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                using (var session = SessionFactory.OpenSession(connection))
+                using (var session = OpenNamedSession("Entity cache load", connection))
                 {
                     session.Get<Category>(FirstCategoryId);
                 }
@@ -72,7 +72,7 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Entity
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                using (var session = SessionFactory.OpenSession(connection))
+                using (var session = OpenNamedSession("Entity cache miss", connection))
                 {
                     session.Get<Category>(FirstCategoryId);
                 }

@@ -20,7 +20,7 @@ namespace NHibernate_Deep_Dive.Basic
 
         private void Create()
         {
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Create"))
             {
                 var customer = new Customer()
                                    {
@@ -34,7 +34,7 @@ namespace NHibernate_Deep_Dive.Basic
 
         private void Read()
         {
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Read"))
             {
                 var customer = session.Get<Customer>(_customerId);
                 Console.WriteLine("Hello, {0}!", customer.FirstName);
@@ -43,7 +43,7 @@ namespace NHibernate_Deep_Dive.Basic
 
         private void Update()
         {
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Update"))
             {
                 var customer = session.Get<Customer>(_customerId);
                 customer.FirstName = "Graham";
@@ -54,7 +54,7 @@ namespace NHibernate_Deep_Dive.Basic
 
         private void Delete()
         {
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Delete"))
             {
                 var customer = session.Get<Customer>(_customerId);
                 session.Delete(customer);

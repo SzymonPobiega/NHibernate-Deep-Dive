@@ -15,7 +15,7 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Query
         public void Only_query_result_ids_are_stored_in_query_cache()
         {
             //Load from DB
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Query cache load"))
             {
                 session.CreateCriteria<Category>()
                     .SetCacheable(true)
@@ -23,7 +23,7 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Query
             }
 
             //Then, load from cache
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Query cache hit"))
             {
                 session.CreateCriteria<Category>()
                    .SetCacheable(true)

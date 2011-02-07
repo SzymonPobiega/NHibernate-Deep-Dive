@@ -8,8 +8,7 @@ namespace NHibernate_Deep_Dive.Session
         protected object FirstCustomerId;
         protected object SecondCustomerId;
 
-        [SetUp]
-        public void PopulateDatabase()
+        protected override void BeforeTestRun()
         {
             using (var session = SessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())

@@ -16,13 +16,13 @@ namespace NHibernate_Deep_Dive.SecondLevelCache.Collection
         public void Whole_object_graph_is_stored_in_cache()
         {
             //Load from DB
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Entity and collection cache load"))
             {
                 session.Get<Order>(OrderId);
             }
 
             //Then, load from cache
-            using (var session = SessionFactory.OpenSession())
+            using (var session = OpenNamedSession("Entity and collection cache hit"))
             {
                 session.Get<Order>(OrderId);
             }

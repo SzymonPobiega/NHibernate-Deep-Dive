@@ -10,11 +10,11 @@ namespace NHibernate_Deep_Dive.Concurrency
         [Test]
         public void Saving_stale_object_causes_exception()
         {
-            using (var looserSession = SessionFactory.OpenSession())
+            using (var loserSession = OpenNamedSession(GetType().Name.Replace("Specification","")+"_Loser"))
             {
-                var firstInstance = looserSession.Get<Customer>(CustomerId);
-                
-                using (var winnerSession = SessionFactory.OpenSession())
+                var firstInstance = loserSession.Get<Customer>(CustomerId);
+
+                using (var winnerSession = OpenNamedSession(GetType().Name.Replace("Specification","") + "_Winner"))
                 using (var winnerTransaction = winnerSession.BeginTransaction())
                 {
                     var secondInstance = winnerSession.Get<Customer>(CustomerId);
@@ -23,10 +23,10 @@ namespace NHibernate_Deep_Dive.Concurrency
                 }
                 TestDelegate act = () =>
                                        {
-                                           using (var looserTransaction = looserSession.BeginTransaction())
+                                           using (var loserTransaction = loserSession.BeginTransaction())
                                            {
                                                firstInstance.FirstName = "Jane";
-                                               looserTransaction.Commit();
+                                               loserTransaction.Commit();
                                            }
                                        };
                 Assert.Throws<StaleObjectStateException>(act);
@@ -35,8 +35,7 @@ namespace NHibernate_Deep_Dive.Concurrency
 
         protected object CustomerId;
 
-        [SetUp]
-        public void PopulateDatabase()
+        protected override void BeforeTestRun()
         {
             using (var session = SessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())

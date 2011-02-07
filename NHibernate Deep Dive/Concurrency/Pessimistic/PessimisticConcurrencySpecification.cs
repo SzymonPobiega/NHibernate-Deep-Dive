@@ -12,7 +12,7 @@ namespace NHibernate_Deep_Dive.Concurrency.Pessimistic
         [Test]
         public void Saving_stale_object_causes_exception()
         {
-            using (var winnerSession = SessionFactory.OpenSession())
+            using (var winnerSession = OpenNamedSession("PessimisticConcurrency_Winner"))
             {
                 using (var winnerTransaction = winnerSession.BeginTransaction())
                 {
@@ -20,15 +20,15 @@ namespace NHibernate_Deep_Dive.Concurrency.Pessimistic
 
                     TestDelegate act = () =>
                                            {
-                                               using (var looserSession = SessionFactory.OpenSession())
-                                               using (var looserTransaction = looserSession.BeginTransaction())
+                                               using (var loserSession = OpenNamedSession("PessimisticConcurrency_Loser"))
+                                               using (var loserTransaction = loserSession.BeginTransaction())
                                                {
 
-                                                   var secondInstance = looserSession.Get<Customer>(CustomerId,
+                                                   var secondInstance = loserSession.Get<Customer>(CustomerId,
                                                                                                     LockMode.
                                                                                                         UpgradeNoWait);
                                                    secondInstance.FirstName = "John";
-                                                   looserTransaction.Commit();
+                                                   loserTransaction.Commit();
                                                }
                                            };
                     Assert.Throws<GenericADOException>(act);
@@ -41,8 +41,7 @@ namespace NHibernate_Deep_Dive.Concurrency.Pessimistic
 
         protected object CustomerId;
 
-        [SetUp]
-        public void PopulateDatabase()
+        protected override void BeforeTestRun()
         {
             using (var session = SessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
