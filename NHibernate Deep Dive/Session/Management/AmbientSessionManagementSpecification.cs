@@ -15,9 +15,7 @@ namespace NHibernate_Deep_Dive.Session.Management
             {                
                 //This goes to the infrastructure (WCF Message Inspector, ASP.NET Http Module)
                 CurrentSessionContext.Bind(session);
-
                 HandleWebRequest();
-
                 CurrentSessionContext.Unbind(SessionFactory);
             }
 

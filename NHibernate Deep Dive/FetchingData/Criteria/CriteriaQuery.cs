@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FluentAssertions;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate_Deep_Dive.Entities;
@@ -19,13 +20,22 @@ namespace NHibernate_Deep_Dive.FetchingData.Criteria
             {
                 int result = (int) session.CreateCriteria(typeof(Customer)).SetProjection(Projections.RowCount()).UniqueResult();
 
-                IList<Customer> customers =
-                    session.CreateCriteria(typeof (Customer)).CreateCriteria("Orders", "o").Add(
-                        Expression.Gt("o.Value", 90m)).List<Customer>();
+                session.CreateCriteria(typeof (Customer))
+                    .CreateCriteria("Orders", "o")
+                    .Add(Restrictions.Gt("o.Value", 90m))
+                    .List<Customer>();
 
-                IList results =
-                    session.CreateCriteria<Customer>().CreateCriteria("Orders", "o").SetProjection(Projections.RowCount()).SetProjection(
-                        Projections.GroupProperty("LastName")).SetProjection(Projections.Max("o.Value")).List();
+                session.CreateCriteria<Customer>()
+                    .CreateCriteria("Orders", "o")
+                    .SetProjection(Projections.RowCount())
+                    .SetProjection(Projections.GroupProperty("LastName"))
+                    .SetProjection(Projections.Max("o.Value"))
+                    .List();
+
+                foreach (var customer in session.CreateCriteria<Customer>().List<Customer>())
+                {
+                    var orderCound = customer.Orders.Count;
+                }
 
                 Assert.AreEqual(10, result);
             }

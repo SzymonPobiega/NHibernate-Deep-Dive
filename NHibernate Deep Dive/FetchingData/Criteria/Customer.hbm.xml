@@ -8,7 +8,7 @@
     <property name="FirstName"/>
     <property name="LastName"/>
 
-    <bag name="Orders" cascade="all">
+    <bag name="Orders" cascade="all" lazy="true">
       <key column="customerId"
           not-null="true"/>
       <one-to-many class="Order"/>

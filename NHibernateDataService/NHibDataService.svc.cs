@@ -97,6 +97,7 @@ namespace NHibernateDataService
     public class MyNHibernateDataContext
     {
         private ISession _session;
+        
         public MyNHibernateDataContext(ISession session)
         {
             _session = session;
