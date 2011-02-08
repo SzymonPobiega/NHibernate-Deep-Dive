@@ -29,6 +29,7 @@ namespace NHibernate_Deep_Dive.Relations.OneToMany
                 Customer customer = session.Get<Customer>(CustomerId);
 
                 customer.Orders.Should().NotBeEmpty().And.HaveCount(x => x == 3);
+                customer.Orders[0].Customer.Should().NotBeNull();
             }
         }
 
